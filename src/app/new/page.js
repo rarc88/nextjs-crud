@@ -1,7 +1,9 @@
 'use client'
-import {useEffect, useState} from 'react';
-import {useRouter} from 'next/navigation'
+import {useEffect} from 'react';
+import {useRouter} from 'next/navigation';
 import {useForm} from 'react-hook-form';
+import {toast} from 'react-hot-toast';
+
 import {useTasks} from '@/context/TasksContext';
 
 export default function Page({task}) {
@@ -9,7 +11,6 @@ export default function Page({task}) {
   const {setValue, register, handleSubmit, formState: {errors}} = useForm();
 
   const {createTask, updateTask} = useTasks();
-  const [newTask, setNewTask] = useState();
 
   useEffect(() => {
     setValue('title', task?.title);
@@ -19,8 +20,10 @@ export default function Page({task}) {
   const onSubmit = handleSubmit((data) => {
     if(task) {
       updateTask({...task, ...data});
+      toast.success('task updated successfulley');
     } else {
       createTask(data);
+      toast.success('task created successfulley');
     }
     router.push('/');
   });
