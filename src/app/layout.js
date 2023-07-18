@@ -1,6 +1,7 @@
 import {TasksProvider} from '@/context/TasksContext'
 import './globals.css'
 import {Inter} from 'next/font/google'
+import Navbar from '@/components/Navbar'
 
 const inter = Inter({subsets: ['latin']})
 
@@ -14,6 +15,7 @@ export default function RootLayout({children}) {
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <TasksProvider>
+          <Navbar />
           {children}
         </TasksProvider>
       </body>
