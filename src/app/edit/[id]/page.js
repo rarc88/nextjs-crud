@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {useState, useEffect} from 'react';
 import {useTasks} from '@/context/TasksContext';
 import NewTaskPage from '../../new/page';
@@ -14,5 +14,5 @@ export default function Page({params}) {
 
   return (
     <NewTaskPage task={task} />
-  )
+  );
 }
