@@ -1,50 +1,47 @@
 'use client'
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation'
+import {useForm} from 'react-hook-form';
 import {useTasks} from '@/context/TasksContext';
 
 export default function Page({task}) {
   const router = useRouter();
+  const {setValue, register, handleSubmit, formState: {errors}} = useForm();
+
   const {createTask, updateTask} = useTasks();
   const [newTask, setNewTask] = useState();
 
   useEffect(() => {
-    setNewTask(task);
+    setValue('title', task?.title);
+    setValue('description', task?.description);
   }, [task]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const onSubmit = handleSubmit((data) => {
     if(task) {
-      updateTask(newTask);
+      updateTask({...task, ...data});
     } else {
-      createTask(newTask);
+      createTask(data);
     }
     router.push('/');
-  }
-
-  const handleChange = (event) => {
-    setNewTask({
-      ...newTask,
-      [event.target.name]: event.target.value
-    });
-  }
+  });
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <input
-        type='text'
-        name='title'
         placeholder='Write a title'
-        value={newTask?.title}
-        onChange={handleChange}
+        {...register('title', {required: true})}
       />
+      {errors.title && (
+        <span>This field is required</span>
+      )}
 
       <textarea
-        name='description'
         placeholder='Write a description'
-        value={newTask?.description}
-        onChange={handleChange}
+        {...register('description', {required: true})}
       />
+      {errors.title && (
+        <span>This field is required</span>
+      )}
 
       <button>Save</button>
     </form>
